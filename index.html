@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#800000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EdMed UES">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="description" content="Sistema de gestión de prórrogas académicas - Universidad de El Salvador">
+
+    <title>Sistema de Prórrogas UES</title>
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Íconos para iOS (no usa manifest) -->
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #800000 0%, #500000 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 24px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.10);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.20);
+            border-radius: 24px;
+            padding: 40px 32px;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            width: 96px;
+            height: 96px;
+            border-radius: 20px;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 32px;
+        }
+
+        .btn-enter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: white;
+            color: #800000;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 16px 28px;
+            border-radius: 14px;
+            text-decoration: none;
+            width: 100%;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-enter:active {
+            transform: scale(0.97);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-enter svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .spinner {
+            display: none;
+            width: 22px;
+            height: 22px;
+            border: 3px solid #eee;
+            border-top-color: #800000;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .install-hint {
+            margin-top: 24px;
+            font-size: 0.78rem;
+            opacity: 0.65;
+            line-height: 1.5;
+        }
+
+        .install-hint strong {
+            opacity: 1;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <img src="icon-192.png" alt="Logo Sistema EdMed" class="logo">
+
+        <span class="badge">🎓 Sistema EdMed</span>
+
+        <h1>Sistema de Prórrogas</h1>
+        <p class="subtitle">Gestión académica para egresados</p>
+
+        <a id="btn-acceder" class="btn-enter" href="REEMPLAZA_CON_TU_URL_GAS" target="_top" onclick="handleClick(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                <polyline points="10 17 15 12 10 7" />
+                <line x1="15" y1="12" x2="3" y2="12" />
+            </svg>
+            <span id="btn-text">Ingresar al Sistema</span>
+            <div class="spinner" id="spinner"></div>
+        </a>
+
+        <p class="install-hint" id="install-hint"></p>
+    </div>
+
+    <script>
+        // URL de tu aplicación de Google Apps Script
+        const GAS_URL = "REEMPLAZA_CON_TU_URL_GAS";
+
+        // Registrar Service Worker (hace la app instalable)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(() => { });
+            });
+        }
+
+        // Manejar clic en botón
+        function handleClick(btn) {
+            const spinner = document.getElementById('spinner');
+            const text = document.getElementById('btn-text');
+            text.textContent = 'Cargando...';
+            spinner.style.display = 'block';
+            btn.querySelector('svg').style.display = 'none';
+        }
+
+        // Hint de instalación según plataforma
+        window.addEventListener('load', () => {
+            const hint = document.getElementById('install-hint');
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            const isAndroid = /Android/.test(navigator.userAgent);
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+                || window.navigator.standalone;
+
+            if (isStandalone) {
+                hint.innerHTML = '✅ App instalada correctamente';
+            } else if (isIOS) {
+                hint.innerHTML = '<strong>💡 Instalar en iOS:</strong><br>Toca <strong>Compartir ↑</strong> y luego <strong>"Añadir a pantalla de inicio"</strong>';
+            } else if (isAndroid) {
+                hint.innerHTML = '<strong>💡 Instalar en Android:</strong><br>Toca el menú ⋮ y selecciona <strong>"Añadir a pantalla principal"</strong>';
+            } else {
+                hint.innerHTML = '<strong>💡 Instalar en PC (Chrome/Edge):</strong><br>Busca el ícono <strong>⊞</strong> al final de la barra de dirección y haz clic en <strong>"Instalar"</strong>. Se abre como app sin barra del navegador.';
+            }
+        });
+
+        // Mostrar prompt de instalación automático (Chrome/Android)
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const hint = document.getElementById('install-hint');
+            hint.innerHTML = '<button onclick="installApp()" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);color:white;padding:8px 18px;border-radius:20px;font-size:0.85rem;cursor:pointer;margin-top:4px;">📲 Instalar como App</button>';
+        });
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+            }
+        }
+    </script>
+
+</body>
+
+</html>
