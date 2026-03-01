@@ -1,11 +1,11 @@
 {
-    "name": "Sistema de Prórrogas UES",
-    "short_name": "EdMed UES",
-    "description": "Sistema de gestión de prórrogas académicas - Universidad de El Salvador",
+    "name": "Sistema de Prórrogas",
+    "short_name": "EdMed",
+    "description": "Sistema de gestión de prórrogas - Ciencias Económicas-UES",
     "start_url": "./",
     "display": "standalone",
-    "background_color": "#800000",
-    "theme_color": "#800000",
+    "background_color": "#bbf7d0",
+    "theme_color": "#16a34a",
     "orientation": "any",
     "icons": [
         {

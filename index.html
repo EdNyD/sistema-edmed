@@ -4,107 +4,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#800000">
+    <meta name="theme-color" content="#0f172a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="EdMed UES">
+    <meta name="apple-mobile-web-app-title" content="EdMed">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="description" content="Sistema de gestión de prórrogas académicas - Universidad de El Salvador">
-
-    <title>Sistema de Prórrogas UES</title>
-
-    <!-- PWA Manifest -->
+    <meta name="description" content="Sistema de gestión de prórrogas - Ciencias Económicas UES">
+    <title>Sistema de Prórrogas</title>
     <link rel="manifest" href="manifest.json">
-
-    <!-- Íconos para iOS (no usa manifest) -->
     <link rel="apple-touch-icon" href="icon-192.png">
-    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
-    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
     <style>
-        * {
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #800000 0%, #500000 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            padding: 24px;
+        :root {
+            --bg: #0a0f1e;
+            --accent: #10b981;
+            --accent2: #34d399;
+            --gold: #f59e0b;
+            --text: #f1f5f9;
+            --muted: #94a3b8;
+            --card-bg: rgba(255, 255, 255, 0.04);
+            --card-bdr: rgba(255, 255, 255, 0.10);
         }
 
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Orbs de fondo */
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        body::before {
+            width: 420px;
+            height: 420px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, transparent 70%);
+            top: -100px;
+            left: -80px;
+            animation: floatA 8s ease-in-out infinite;
+        }
+
+        body::after {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
+            bottom: -80px;
+            right: -60px;
+            animation: floatB 10s ease-in-out infinite;
+        }
+
+        @keyframes floatA {
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(30px, 40px);
+            }
+        }
+
+        @keyframes floatB {
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(-25px, -35px);
+            }
+        }
+
+        /* Card principal */
         .card {
-            background: rgba(255, 255, 255, 0.10);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.20);
-            border-radius: 24px;
-            padding: 40px 32px;
+            position: relative;
+            z-index: 1;
+            background: var(--card-bg);
+            border: 1px solid var(--card-bdr);
+            border-radius: 28px;
+            padding: 44px 36px 36px;
             max-width: 380px;
             width: 100%;
             text-align: center;
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.05),
+                0 24px 64px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            animation: fadeUp 0.6s cubic-bezier(.22, 1, .36, 1) both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Logo */
+        .logo-wrap {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 22px;
+        }
+
+        .logo-glow {
+            position: absolute;
+            inset: -6px;
+            border-radius: 28px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.4) 0%, transparent 70%);
+            filter: blur(10px);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.6;
+                transform: scale(0.95);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
         }
 
         .logo {
-            width: 96px;
-            height: 96px;
-            border-radius: 20px;
-            margin: 0 auto 20px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Chip / badge */
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(90deg, rgba(16, 185, 129, 0.18), rgba(245, 158, 11, 0.12));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 999px;
+            padding: 5px 14px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: var(--accent2);
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .chip::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 6px var(--accent);
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
         }
 
         h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 6px;
+            font-size: 1.65rem;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+            margin-bottom: 8px;
         }
 
         .subtitle {
-            font-size: 0.9rem;
-            opacity: 0.8;
-            margin-bottom: 32px;
+            font-size: 0.88rem;
+            color: var(--muted);
+            font-weight: 400;
+            margin-bottom: 36px;
+            line-height: 1.5;
         }
 
+        /* Botón */
         .btn-enter {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            background: white;
-            color: #800000;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
             font-weight: 700;
             font-size: 1rem;
-            padding: 16px 28px;
-            border-radius: 14px;
+            padding: 17px 28px;
+            border-radius: 16px;
             text-decoration: none;
             width: 100%;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            border: none;
+            cursor: pointer;
+            box-shadow:
+                0 4px 24px rgba(16, 185, 129, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s;
+            letter-spacing: 0.2px;
+        }
+
+        .btn-enter:hover {
+            filter: brightness(1.08);
+            box-shadow: 0 6px 32px rgba(16, 185, 129, 0.5);
         }
 
         .btn-enter:active {
             transform: scale(0.97);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 12px rgba(16, 185, 129, 0.3);
         }
 
         .btn-enter svg {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
         }
 
+        /* Spinner */
         .spinner {
             display: none;
-            width: 22px;
-            height: 22px;
-            border: 3px solid #eee;
-            border-top-color: #800000;
+            width: 20px;
+            height: 20px;
+            border: 2.5px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
         }
@@ -115,25 +286,62 @@
             }
         }
 
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 0 16px;
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 0.75rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Hint de instalación */
         .install-hint {
-            margin-top: 24px;
-            font-size: 0.78rem;
-            opacity: 0.65;
-            line-height: 1.5;
+            font-size: 0.76rem;
+            color: var(--muted);
+            line-height: 1.6;
         }
 
         .install-hint strong {
-            opacity: 1;
+            color: rgba(255, 255, 255, 0.75);
         }
 
-        .badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 20px;
-            padding: 4px 12px;
-            font-size: 0.75rem;
-            margin-bottom: 20px;
-            letter-spacing: 0.5px;
+        /* Botón instalar */
+        .btn-install {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn-install:hover {
+            background: rgba(255, 255, 255, 0.10);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 24px;
+            font-size: 0.68rem;
+            color: rgba(255, 255, 255, 0.2);
+            letter-spacing: 0.3px;
         }
     </style>
 </head>
@@ -141,14 +349,19 @@
 <body>
 
     <div class="card">
-        <img src="icon-192.png" alt="Logo Sistema EdMed" class="logo">
+        <div class="logo-wrap">
+            <div class="logo-glow"></div>
+            <img src="icon-192.png" alt="EdMed" class="logo">
+        </div>
 
-        <span class="badge">🎓 Sistema EdMed</span>
+        <div class="chip">Sistema EdMed</div>
 
-        <h1>Sistema de Prórrogas</h1>
-        <p class="subtitle">Gestión académica para egresados</p>
+        <h1>Sistema de<br>Prórrogas</h1>
+        <p class="subtitle">Gestión académica para egresados<br>Ciencias Económicas · UES</p>
 
-        <a id="btn-acceder" class="btn-enter" href="REEMPLAZA_CON_TU_URL_GAS" target="_top" onclick="handleClick(this)">
+        <a id="btn-acceder" class="btn-enter"
+            href="https://script.google.com/macros/s/AKfycbwA_IsimRlgGIbMoCEbuoQY5zlkOaeev-MppUAql2xFIEY2pFObUEtbhQ3RcZRKd6OZ/exec"
+            target="_top" onclick="handleClick(this)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                 stroke-linejoin="round">
                 <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
@@ -159,55 +372,52 @@
             <div class="spinner" id="spinner"></div>
         </a>
 
+        <div class="divider">instalación</div>
         <p class="install-hint" id="install-hint"></p>
+
+        <p class="footer">Universidad de El Salvador · EdMed v1.0</p>
     </div>
 
     <script>
-        // URL de tu aplicación de Google Apps Script
-        const GAS_URL = "REEMPLAZA_CON_TU_URL_GAS";
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbwA_IsimRlgGIbMoCEbuoQY5zlkOaeev-MppUAql2xFIEY2pFObUEtbhQ3RcZRKd6OZ/exec";
 
-        // Registrar Service Worker (hace la app instalable)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js').catch(() => { });
             });
         }
 
-        // Manejar clic en botón
         function handleClick(btn) {
-            const spinner = document.getElementById('spinner');
-            const text = document.getElementById('btn-text');
-            text.textContent = 'Cargando...';
-            spinner.style.display = 'block';
+            document.getElementById('spinner').style.display = 'block';
+            document.getElementById('btn-text').textContent = 'Cargando...';
             btn.querySelector('svg').style.display = 'none';
         }
 
-        // Hint de instalación según plataforma
+        // Hints según plataforma
         window.addEventListener('load', () => {
             const hint = document.getElementById('install-hint');
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
             const isAndroid = /Android/.test(navigator.userAgent);
-            const isStandalone = window.matchMedia('(display-mode: standalone)').matches
-                || window.navigator.standalone;
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
 
             if (isStandalone) {
                 hint.innerHTML = '✅ App instalada correctamente';
             } else if (isIOS) {
-                hint.innerHTML = '<strong>💡 Instalar en iOS:</strong><br>Toca <strong>Compartir ↑</strong> y luego <strong>"Añadir a pantalla de inicio"</strong>';
+                hint.innerHTML = '<strong>iOS:</strong> Toca <strong>Compartir ↑</strong> → <strong>"Añadir a pantalla de inicio"</strong>';
             } else if (isAndroid) {
-                hint.innerHTML = '<strong>💡 Instalar en Android:</strong><br>Toca el menú ⋮ y selecciona <strong>"Añadir a pantalla principal"</strong>';
+                hint.innerHTML = '<strong>Android:</strong> Menú <strong>⋮</strong> → <strong>"Añadir a pantalla principal"</strong>';
             } else {
-                hint.innerHTML = '<strong>💡 Instalar en PC (Chrome/Edge):</strong><br>Busca el ícono <strong>⊞</strong> al final de la barra de dirección y haz clic en <strong>"Instalar"</strong>. Se abre como app sin barra del navegador.';
+                hint.innerHTML = '<strong>PC (Chrome/Edge):</strong> Icono <strong>⊞</strong> en la barra de dirección → <strong>"Instalar"</strong>';
             }
         });
 
-        // Mostrar prompt de instalación automático (Chrome/Android)
+        // Install prompt automático (Chrome/Android/PC)
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            const hint = document.getElementById('install-hint');
-            hint.innerHTML = '<button onclick="installApp()" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);color:white;padding:8px 18px;border-radius:20px;font-size:0.85rem;cursor:pointer;margin-top:4px;">📲 Instalar como App</button>';
+            document.getElementById('install-hint').innerHTML =
+                '<button class="btn-install" onclick="installApp()">📲 Instalar como App</button>';
         });
 
         function installApp() {
@@ -217,7 +427,6 @@
             }
         }
     </script>
-
 </body>
 
 </html>
