@@ -1,5 +1,5 @@
 // Service Worker - Sistema de Prórrogas UES
-const CACHE_NAME = 'edmed-ues-v1.1';
+const CACHE_NAME = 'edmed-ues-v1.2';
 
 // Al instalar: cachear solo la shell (index.html y assets locales)
 self.addEventListener('install', event => {
@@ -37,4 +37,5 @@ self.addEventListener('fetch', event => {
         caches.match(event.request).then(cached => cached || fetch(event.request))
     );
 });
+
 
