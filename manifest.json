@@ -1,7 +1,7 @@
 {
     "name": "Sistema de Gesrtión de Prórrogas",
     "short_name": "EdMed",
-    "description": "Sistema de gestión de prórrogas - Ciencias Económicas-UES",
+    "description": "Sistema de gestión de prórrogas - Ciencias Económicas",
     "start_url": "./",
     "display": "standalone",
     "background_color": "#bbf7d0",
