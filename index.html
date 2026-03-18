@@ -3,345 +3,42 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <!-- ✅ Mejora: Eliminado user-scalable=no para cumplir con reglas de accesibilidad -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0f172a">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="EdMed">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="description" content="Sistema de gestión de prórrogas - Ciencias Económicas">
+    <meta name="description" content="Sistema de gestión de prórrogas">
     <title>Sistema de Prórrogas</title>
+
     <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon-192.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link rel="icon" href="icon-192.png">
 
     <style>
-        *,
-        *::before,
-        *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg: #0a0f1e;
-            --accent: #10b981;
-            --accent2: #34d399;
-            --gold: #f59e0b;
-            --text: #f1f5f9;
-            --muted: #94a3b8;
-            --card-bg: rgba(255, 255, 255, 0.04);
-            --card-bdr: rgba(255, 255, 255, 0.10);
-        }
-
         body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: var(--bg);
-            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: #0a0f1e;
+            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 24px;
-            overflow: hidden;
-            position: relative;
+            height: 100vh;
         }
 
-        /* Orbs de fondo */
-        body::before,
-        body::after {
-            content: '';
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        body::before {
-            width: 420px;
-            height: 420px;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, transparent 70%);
-            top: -100px;
-            left: -80px;
-            animation: floatA 8s ease-in-out infinite;
-        }
-
-        body::after {
-            width: 350px;
-            height: 350px;
-            background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
-            bottom: -80px;
-            right: -60px;
-            animation: floatB 10s ease-in-out infinite;
-        }
-
-        @keyframes floatA {
-
-            0%,
-            100% {
-                transform: translate(0, 0);
-            }
-
-            50% {
-                transform: translate(30px, 40px);
-            }
-        }
-
-        @keyframes floatB {
-
-            0%,
-            100% {
-                transform: translate(0, 0);
-            }
-
-            50% {
-                transform: translate(-25px, -35px);
-            }
-        }
-
-        /* Card principal */
         .card {
-            position: relative;
-            z-index: 1;
-            background: var(--card-bg);
-            border: 1px solid var(--card-bdr);
-            border-radius: 28px;
-            padding: 44px 36px 36px;
-            max-width: 380px;
-            width: 100%;
             text-align: center;
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            box-shadow:
-                0 0 0 1px rgba(255, 255, 255, 0.05),
-                0 24px 64px rgba(0, 0, 0, 0.5),
-                inset 0 1px 0 rgba(255, 255, 255, 0.08);
-            animation: fadeUp 0.6s cubic-bezier(.22, 1, .36, 1) both;
+            background: rgba(255,255,255,0.05);
+            padding: 40px;
+            border-radius: 20px;
         }
 
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Logo */
-        .logo-wrap {
-            position: relative;
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 22px;
-        }
-
-        .logo-glow {
-            position: absolute;
-            inset: -6px;
-            border-radius: 28px;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.4) 0%, transparent 70%);
-            filter: blur(10px);
-            animation: pulse 3s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 0.6;
-                transform: scale(0.95);
-            }
-
-            50% {
-                opacity: 1;
-                transform: scale(1.05);
-            }
-        }
-
-        .logo {
-            position: relative;
-            width: 100px;
-            height: 100px;
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-        }
-
-        /* Chip / badge */
-        .chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: linear-gradient(90deg, rgba(16, 185, 129, 0.18), rgba(245, 158, 11, 0.12));
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 999px;
-            padding: 5px 14px;
-            font-size: 0.72rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            color: var(--accent2);
-            text-transform: uppercase;
-            margin-bottom: 18px;
-        }
-
-        .chip::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--accent);
-            box-shadow: 0 0 6px var(--accent);
-            animation: blink 2s ease-in-out infinite;
-        }
-
-        @keyframes blink {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.3;
-            }
-        }
-
-        h1 {
-            font-size: 1.65rem;
-            font-weight: 800;
-            color: var(--text);
-            letter-spacing: -0.5px;
-            line-height: 1.2;
-            margin-bottom: 8px;
-        }
-
-        .subtitle {
-            font-size: 0.88rem;
-            color: var(--muted);
-            font-weight: 400;
-            margin-bottom: 36px;
-            line-height: 1.5;
-        }
-
-        /* Botón */
-        .btn-enter {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 25px;
+            background: #10b981;
             color: white;
-            font-weight: 700;
-            font-size: 1rem;
-            padding: 17px 28px;
-            border-radius: 16px;
             text-decoration: none;
-            width: 100%;
-            border: none;
-            cursor: pointer;
-            box-shadow:
-                0 4px 24px rgba(16, 185, 129, 0.35),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
-            transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s;
-            letter-spacing: 0.2px;
-        }
-
-        .btn-enter:hover {
-            filter: brightness(1.08);
-            box-shadow: 0 6px 32px rgba(16, 185, 129, 0.5);
-        }
-
-        .btn-enter:active {
-            transform: scale(0.97);
-            box-shadow: 0 2px 12px rgba(16, 185, 129, 0.3);
-        }
-
-        .btn-enter svg {
-            width: 20px;
-            height: 20px;
-            flex-shrink: 0;
-        }
-
-        /* Spinner */
-        .spinner {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 2.5px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Divider */
-        .divider {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin: 24px 0 16px;
-            color: rgba(255, 255, 255, 0.15);
-            font-size: 0.75rem;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        /* Hint de instalación */
-        .install-hint {
-            font-size: 0.76rem;
-            color: var(--muted);
-            line-height: 1.6;
-        }
-
-        .install-hint strong {
-            color: rgba(255, 255, 255, 0.75);
-        }
-
-        /* Botón instalar */
-        .btn-install {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 8px;
-            transition: background 0.2s;
-        }
-
-        .btn-install:hover {
-            background: rgba(255, 255, 255, 0.10);
-        }
-
-        /* Footer */
-        .footer {
-            margin-top: 24px;
-            font-size: 0.68rem;
-            color: rgba(255, 255, 255, 0.2);
-            letter-spacing: 0.3px;
+            border-radius: 10px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -349,91 +46,36 @@
 <body>
 
     <div class="card">
-        <div class="logo-wrap">
-            <div class="logo-glow"></div>
-            <img src="icon-192.png" alt="EdMed" class="logo">
-        </div>
+        <h1>Sistema de Prórrogas</h1>
+        <p>Acceso al sistema académico</p>
 
-        <div class="chip">Sistema EdMed</div>
-
-        <h1>Sistema de<br>Prórrogas</h1>
-        <p class="subtitle">Gestión académica para egresados<br>Ciencias Económicas </p>
-
-        <a id="btn-acceder" class="btn-enter"
-            href="https://script.google.com/macros/s/AKfycbzQRQJxbXNYbut65BILKNkOob9-jAU0H3tgZ-hGE6vA1tkpAi2avtjA3riE092KyjLR/exec"
-            target="_top" onclick="handleClick(this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                stroke-linejoin="round">
-                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
-                <polyline points="10 17 15 12 10 7" />
-                <line x1="15" y1="12" x2="3" y2="12" />
-            </svg>
-            <span id="btn-text">Ingresar al Sistema</span>
-            <div class="spinner" id="spinner"></div>
+        <!-- ✅ Mejora: Se agregó href="#" para que los lectores de pantalla lo reconozcan desde el inicio -->
+        <a id="btn-acceder" class="btn" target="_top" href="#">
+            Ingresar
         </a>
-
-        <div class="divider">instalación</div>
-        <p class="install-hint" id="install-hint"></p>
-
-        <p class="footer">Universidad de El Salvador · EdMed v2.0</p>
     </div>
 
     <script>
+        // 🔥 TU LINK DE APPS SCRIPT
         const GAS_URL = "https://script.google.com/macros/s/AKfycbzQRQJxbXNYbut65BILKNkOob9-jAU0H3tgZ-hGE6vA1tkpAi2avtjA3riE092KyjLR/exec";
 
+        // Asignar SIEMPRE con anti-cache usando template literals (más moderno)
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('btn-acceder');
+            if (btn) {
+                btn.href = `${GAS_URL}?v=${Date.now()}`;
+            }
+        });
+
+        // Registrar Service Worker
         if ('serviceWorker' in navigator) {
+            // ✅ Mejora: Retrasar la instalación al evento 'load' para priorizar que la pantalla pinte el HTML a máxima velocidad
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch(() => { });
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => console.log('SW registrado correctamente:', registration.scope))
+                    .catch(error => console.error('Error al registrar SW:', error));
             });
-        }
-
-        function handleClick(btn) {
-            document.getElementById('spinner').style.display = 'block';
-            document.getElementById('btn-text').textContent = 'Cargando...';
-            btn.querySelector('svg').style.display = 'none';
-        }
-
-        // Hints según plataforma
-        window.addEventListener('load', () => {
-            const hint = document.getElementById('install-hint');
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-            const isAndroid = /Android/.test(navigator.userAgent);
-            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-
-            if (isStandalone) {
-                hint.innerHTML = '✅ App instalada correctamente';
-            } else if (isIOS) {
-                hint.innerHTML = '<strong>iOS:</strong> Toca <strong>Compartir ↑</strong> → <strong>"Añadir a pantalla de inicio"</strong>';
-            } else if (isAndroid) {
-                hint.innerHTML = '<strong>Android:</strong> Menú <strong>⋮</strong> → <strong>"Añadir a pantalla principal"</strong>';
-            } else {
-                hint.innerHTML = '<strong>PC (Chrome/Edge):</strong> Icono <strong>⊞</strong> en la barra de dirección → <strong>"Instalar"</strong>';
-            }
-        });
-
-        // Install prompt automático (Chrome/Android/PC)
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            document.getElementById('install-hint').innerHTML =
-                '<button class="btn-install" onclick="installApp()">📲 Instalar como App</button>';
-        });
-
-        function installApp() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
-            }
         }
     </script>
 </body>
-
-
 </html>
-
-
-
-
-
-
