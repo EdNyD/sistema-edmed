@@ -1,65 +1,90 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
-    <!-- ✅ Mejora: Eliminado user-scalable=no para cumplir con reglas de accesibilidad -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0f172a">
-    <meta name="description" content="Sistema de gestión de prórrogas">
     <title>Sistema de Prórrogas</title>
 
-    <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icon-192.png">
 
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #0a0f1e;
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100vh;
+            margin: 0;
+            overflow: hidden;
         }
 
         .card {
             text-align: center;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             padding: 40px;
-            border-radius: 20px;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            max-width: 90%;
         }
+
+        h1 { margin-bottom: 10px; font-size: 2rem; }
+        p { color: #94a3b8; margin-bottom: 30px; }
 
         .btn {
             display: inline-block;
-            margin-top: 20px;
-            padding: 15px 25px;
+            padding: 16px 32px;
             background: #10b981;
             color: white;
             text-decoration: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Indicador de Versión para control visual */
+        .version-tag {
+            position: fixed;
+            bottom: 10px;
+            right: 15px;
+            font-size: 10px;
+            color: rgba(255,255,255,0.3);
+            user-select: none;
         }
     </style>
 </head>
-
 <body>
 
     <div class="card">
         <h1>Sistema de Prórrogas</h1>
-        <p>Acceso al sistema académico</p>
+        <p>Acceso directo al sistema académico</p>
 
-        <!-- ✅ Mejora: Se agregó href="#" para que los lectores de pantalla lo reconozcan desde el inicio -->
         <a id="btn-acceder" class="btn" target="_top" href="#">
-            Ingresar
+            Ingresar al Sistema
         </a>
     </div>
 
+    <div class="version-tag">v2.0.1 - Sin Caché</div>
+
     <script>
-        // 🔥 TU LINK DE APPS SCRIPT
         const GAS_URL = "https://script.google.com/macros/s/AKfycbyeqpjMyRtwvplHuDs_moyTOZQUs5jKaoYosarrqXnj_vpKzCTUCdVKj2ww7qxtZaEp/exec";
 
-        // Asignar SIEMPRE con anti-cache usando template literals (más moderno)
+        // 1. Configurar el botón con anti-caché para el destino
         document.addEventListener('DOMContentLoaded', () => {
             const btn = document.getElementById('btn-acceder');
             if (btn) {
@@ -67,13 +92,22 @@
             }
         });
 
-        // Registrar Service Worker
+        // 2. Limpieza total y forzada de cualquier Service Worker previo
         if ('serviceWorker' in navigator) {
-            // ✅ Mejora: Retrasar la instalación al evento 'load' para priorizar que la pantalla pinte el HTML a máxima velocidad
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(registration => console.log('SW registrado correctamente:', registration.scope))
-                    .catch(error => console.error('Error al registrar SW:', error));
+            navigator.serviceWorker.getRegistrations().then(registrations => {
+                for (let registration of registrations) {
+                    registration.unregister().then(() => {
+                        console.log('Cache antiguo limpiado con éxito.');
+                        // Borrar memorias de almacenamiento
+                        if (window.caches) {
+                            caches.keys().then(names => {
+                                for (let name of names) caches.delete(name);
+                            });
+                        }
+                        // Recargar una vez para asegurar limpieza total si fuera necesario
+                        // location.reload(); 
+                    });
+                }
             });
         }
     </script>
